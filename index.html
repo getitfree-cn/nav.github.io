@@ -1,1 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的导航</title>
+    <link rel="icon" href="./nav.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./nav.ico" type="image/x-icon">
+    <style>
+        * {
+            font-family: SF Pro SC, SF Pro Text, SF Pro Icons, PingFang SC, Helvetica Neue, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            min-height: 100vh;
+            background: url('img/0007.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Microsoft YaHei', sans-serif;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 90%;
+            margin: 50px auto;
+            margin-top: 50px;
+        }
+
+        /* 分类样式 */
+
+        .category {
+            margin-bottom: 70px;
+            width: 100%;
+        }
+
+        .category-title {
+            color: #fff;
+            font-size: 25px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(9, minmax(0, 1fr)); /* 固定8列 */
+            gap: 16px 66px;
+            justify-content: start; /* 左对齐 */
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #fff;
+            text-align: center;
+            padding: 0px;
+        }
+
+        .nav-icon {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 8px;
+        }
+
+        .nav-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .nav-text {
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 0px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1920px) {
+            .nav-grid {
+                grid-template-columns: repeat(8, 1fr);
+                gap: 40px;
+            }
+            
+            .nav-icon {
+                width: 100%;
+                height: 100%;
+            }
+
+            .nav-text {
+            font-size: 16px;
+        }
+
+            .category-title {
+                font-size: 25px;
+                margin-bottom: 0px;
+            }
+        }
+
+        @media (max-width: 1280px) {
+            .nav-grid {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 40px;
+            }
+            
+            .nav-icon {
+                width: 100%;
+                height: 100%;
+            }
+
+            .nav-text {
+            font-size: 14px;
+        }
+
+            .category-title {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .nav-icon {
+                width: 100px;
+                height: 100px;
+            }
+
+            .category-title {
+                font-size: 15px;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 搜索分类 -->
+        <div class="category">
+            <div class="category-title">常用网站</div>
+            <nav class="nav-grid">
+                <a href="https://marstab.com/nav" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/marstab.png" alt="火星标签页">
+                    </div>
+                    <div class="nav-text">火星标签页</div>
+                </a>
+                <a href="https://www.bilibili.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/bilibili3.png" alt="哔哩哔哩">
+                    </div>
+                    <div class="nav-text">哔哩哔哩</div>
+                </a>
+                <a href="https://www.google.com/?hl=zh-cn" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/Google.png" alt="谷歌">
+                    </div>
+                    <div class="nav-text">Google</div>
+                </a>
+                <a href="https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=1402983344" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/WeChat.png" alt="微信公众平台">
+                    </div>
+                    <div class="nav-text">微信公众平台</div>
+                </a>
+                <a href="https://www.youtube.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/YouTub.png" alt="YouTube">
+                    </div>
+                    <div class="nav-text">YouTube</div>
+                </a>
+                <a href="https://www.instagram.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/Instagram.png" alt="Instagram">
+                    </div>
+                    <div class="nav-text">Instagram</div>
+                </a>
+                <a href="https://x.com/home" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/X.png" alt="X">
+                    </div>
+                    <div class="nav-text">X</div>
+                </a>
+                <a href="https://www.getitfree.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/GetItFree.png" alt="正版中国">
+                    </div>
+                    <div class="nav-text">正版中国</div>
+                </a>
+                <a href="https://www.getitfree.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/GetItFree.png" alt="正版中国">
+                    </div>
+                    <div class="nav-text">正版中国</div>
+                </a>
+            </nav>
+        </div>
+
+        <!-- 分类 -->
+        <div class="category">
+            <div class="category-title">AI 搜索</div>
+            <nav class="nav-grid">
+                <a href="https://xinghuo.xfyun.cn/desk" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/xunfeixinghuo.png" alt="讯飞星火">
+                    </div>
+                    <div class="nav-text">讯飞星火</div>
+                </a>
+                <a href="https://www.doubao.com/chat/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/doubao.png" alt="豆包">
+                    </div>
+                    <div class="nav-text">豆包</div>
+                </a>
+                <a href="https://yiyan.baidu.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/wenxinyiyan.png" alt="文心一言">
+                    </div>
+                    <div class="nav-text">文心一言</div>
+                </a>
+                <a href="https://chat.baidu.com/search" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/baiduaisou.png" alt="百度AI搜索">
+                    </div>
+                    <div class="nav-text">百度AI搜索</div>
+                </a>
+                <a href="https://chat.deepseek.com" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/DeepSeek.png" alt="DeepSeek">
+                    </div>
+                    <div class="nav-text">DeepSeek</div>
+                </a>
+                <a href="https://ai.quark.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/quark.png" alt="夸克">
+                    </div>
+                    <div class="nav-text">夸克</div>
+                </a>
+                <a href="https://www.kimi.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/kimi.png" alt="KIMI">
+                    </div>
+                    <div class="nav-text">KIMI</div>
+                </a>
+                <a href="https://yuanbao.tencent.com/chat/naQivTmsDa" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/tencentyuanbao.png" alt="腾讯元宝">
+                    </div>
+                    <div class="nav-text">腾讯元宝</div>
+                </a>
+                <a href="https://www.tongyi.com/qianwen/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/tongyi.png" alt="通义">
+                    </div>
+                    <div class="nav-text">通义</div>
+                </a>
+            </nav>
+        </div>
+
+        <!-- 分类 -->
+        <div class="category">
+            <div class="category-title">网盘资源</div>
+            <nav class="nav-grid">
+                <a href="https://pan.qianfan.app/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/qianfansousuo.png" alt="千帆搜索">
+                    </div>
+                    <div class="nav-text">千帆搜索</div>
+                </a>
+                <a href="https://yiso.eu.org/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/yisou.png" alt="易搜">
+                    </div>
+                    <div class="nav-text">易搜</div>
+                </a>
+                <a href="http://yunpanziyuan.top/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/yunpanziyuan.png" alt="云盘资源网">
+                    </div>
+                    <div class="nav-text">云盘资源网</div>
+                </a>
+                <a href="https://www.lzpanx.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/lanpan.png" alt="懒盘搜索">
+                    </div>
+                    <div class="nav-text">懒盘搜索</div>
+                </a>
+                <a href="https://news.bqrdh.com/wp" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/yihaoxianbao.png" alt="网盘共享中心">
+                    </div>
+                    <div class="nav-text">网盘共享中心</div>
+                </a>
+            </nav>
+        </div>
+
+        <!-- 分类 -->
+        <div class="category">
+            <div class="category-title">素材下载</div>
+            <nav class="nav-grid">
+                <a href="https://c4dsky.com" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/shusheng.png" alt="书生CG资源站">
+                    </div>
+                    <div class="nav-text">书生CG资源站</div>
+                </a>
+                <a href="https://www.lookae.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/dazhonglian.png" alt="LookAE">
+                    </div>
+                    <div class="nav-text">LookAE</div>
+                </a>
+                <a href="https://www.gfxcamp.com" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/quchiyihao.png" alt="龋齿一号">
+                    </div>
+                    <div class="nav-text">龋齿一号</div>
+                </a>
+                <a href="https://www.talkae.com" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/taoke.png" alt="韬客AE">
+                    </div>
+                    <div class="nav-text">韬客AE</div>
+                </a>
+                <a href="http://suby.cn/vip/vipshow" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/subai.png" alt="素白">
+                    </div>
+                    <div class="nav-text">素白</div>
+                </a>
+                <a href="http://www.modown.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/modun.png" alt="魔顿网">
+                    </div>
+                    <div class="nav-text">魔顿网</div>
+                </a>
+                <a href="https://www.videocopilot.net/tutorials/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/vc.png" alt="VideoCopilot教程">
+                    </div>
+                    <div class="nav-text">VideoCopilot教程</div>
+                </a>
+            </nav>
+        </div>
+
+
+        <!-- 分类 -->
+        <div class="category">
+            <div class="category-title">软件下载</div>
+            <nav class="nav-grid">
+                <a href="https://www.getitfree.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/GetItFree.png" alt="正版中国">
+                    </div>
+                    <div class="nav-text">正版中国</div>
+                </a>
+                <a href="https://www.appinn.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/xiaozhong.png" alt="小众软件">
+                    </div>
+                    <div class="nav-text">小众软件</div>
+                </a>
+                <a href="https://www.iplaysoft.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/yiciyuan.png" alt="异次元软件">
+                    </div>
+                    <div class="nav-text">异次元软件</div>
+                </a>
+                <a href="https://www.52pojie.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/52.png" alt="吾爱破解">
+                    </div>
+                    <div class="nav-text">吾爱破解</div>
+                </a>
+                <a href="https://www.mpyit.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/mpy.png" alt="殁漂遥">
+                    </div>
+                    <div class="nav-text">殁漂遥</div>
+                </a>
+                <a href="https://www.ghxi.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/guohe.png" alt="果核剥壳">
+                    </div>
+                    <div class="nav-text">果核剥壳</div>
+                </a>
+                <a href="https://www.423down.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/423.png" alt="423down">
+                    </div>
+                    <div class="nav-text">423down</div>
+                </a>
+                <a href="https://myqqjd.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/qianqianjingdian.png" alt="芊芊精典">
+                    </div>
+                    <div class="nav-text">芊芊精典</div>
+                </a>
+                <a href="https://www.ypojie.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/yipaojie.png" alt="易破解">
+                    </div>
+                    <div class="nav-text">易破解</div>
+                </a>
+                <a href="https://www.dayanzai.me/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/IRepacks.png" alt="IRepacks">
+                    </div>
+                    <div class="nav-text">IRepacks</div>
+                </a>
+                <a href="https://www.dayanzai.me/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/dayanzai.png" alt="大眼仔旭">
+                    </div>
+                    <div class="nav-text">大眼仔旭</div>
+                </a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
