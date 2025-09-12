@@ -134,6 +134,10 @@
                 margin-bottom: 15px;
             }
         }
+    
+    .hidden {
+        display: none !important;
+    }
     </style>
 </head>
 <body>
@@ -141,7 +145,7 @@
     <div class="container">
         <!-- 搜索分类 -->
         <div class="category">
-            <div class="category-title">💖 常用网站</div>
+            <div class="category-title" onclick="toggleCategory(this)">💖 常用网站</div>
             <nav class="nav-grid">
                 <a href="https://marstab.com/nav" class="nav-item" target="_blank">
                     <div class="nav-icon">
@@ -202,7 +206,7 @@
 
         <!-- 分类 -->
         <div class="category">
-            <div class="category-title">🔎 AI 搜索</div>
+            <div class="category-title" onclick="toggleCategory(this)">🔎 AI 搜索</div>
             <nav class="nav-grid">
                 <a href="https://xinghuo.xfyun.cn/desk" class="nav-item" target="_blank">
                     <div class="nav-icon">
@@ -263,7 +267,7 @@
 
         <!-- 分类 -->
         <div class="category">
-            <div class="category-title">💾 网盘资源</div>
+            <div class="category-title" onclick="toggleCategory(this)">💾 网盘资源</div>
             <nav class="nav-grid">
                 <a href="https://pan.qianfan.app/" class="nav-item" target="_blank">
                     <div class="nav-icon">
@@ -300,7 +304,7 @@
 
         <!-- 分类 -->
         <div class="category">
-            <div class="category-title">📷 素材下载</div>
+            <div class="category-title" onclick="toggleCategory(this)">📷 素材下载</div>
             <nav class="nav-grid">
                 <a href="https://c4dsky.com" class="nav-item" target="_blank">
                     <div class="nav-icon">
@@ -350,7 +354,7 @@
 
         <!-- 分类 -->
         <div class="category">
-            <div class="category-title">💽 软件下载</div>
+            <div class="category-title" onclick="toggleCategory(this)">💽 软件下载</div>
             <nav class="nav-grid">
                 <a href="https://www.getitfree.cn/" class="nav-item" target="_blank">
                     <div class="nav-icon">
@@ -445,5 +449,10 @@
             </nav>
         </div>
     </div>
-</body>
+<script>
+function toggleCategory(titleElement) {
+    const grid = titleElement.parentElement.querySelector('.nav-grid');
+    grid.classList.toggle('hidden');
+}
+</script></body>
 </html>
