@@ -16,10 +16,9 @@
 
         body {
             min-height: 100vh;
-            background: url('img/0007.jpg') no-repeat center center fixed;
+            background: url('img/0015.png') no-repeat center center fixed;
             background-size: cover;
-            font-family: 'Microsoft YaHei', sans-serif;
-            padding: 20px 0;
+            padding: 5px 0;
         }
 
         .container {
@@ -35,10 +34,10 @@
 
         .category-title {
             color: #fff;
-            background-color: #ffffff55;
+            background-color: #ffffff65;
             border-radius: 5px;
             font-size: 25px;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 20px;
             padding: 2px 10px;
         }
@@ -89,28 +88,28 @@
             }
 
             .nav-text {
-            font-size: 16px;
+            font-size: 14px;
         }
 
             .category-title {
-                font-size: 23px;
-                margin: 15px auto;
+                font-size: 17px;
+                margin: 13px auto;
             }
         }
 
         @media (max-width: 1280px) {
             .nav-grid {
                 grid-template-columns: repeat(6, 1fr);
-                gap: 40px;
+                gap: 30px;
             }
             
             .nav-icon {
                 width: 100%;
-                height: 100%;
+                height: 82%;
             }
 
             .nav-text {
-            font-size: 14px;
+            font-size: 16px;
         }
 
             .category-title {
@@ -141,7 +140,12 @@
     </style>
 </head>
 <body>
-
+    <script>
+    function toggleCategory(titleElement) {
+        const grid = titleElement.parentElement.querySelector('.nav-grid');
+        grid.classList.toggle('hidden');
+    }
+    </script>
     <div class="container">
         <!-- 搜索分类 -->
         <div class="category">
@@ -165,11 +169,11 @@
                     </div>
                     <div class="nav-text">Google</div>
                 </a>
-                <a href="https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=1402983344" class="nav-item" target="_blank">
+                <a href="https://mp.weixin.qq.com/" class="nav-item" target="_blank">
                     <div class="nav-icon">
                         <img src="./ico/WeChat.png" alt="微信公众平台">
                     </div>
-                    <div class="nav-text">微信公众平台</div>
+                    <div class="nav-text">微信公众号</div>
                 </a>
                 <a href="https://www.youtube.com/" class="nav-item" target="_blank">
                     <div class="nav-icon">
@@ -195,14 +199,72 @@
                     </div>
                     <div class="nav-text">正版中国</div>
                 </a>
-                <a href="https://www.getitfree.cn/" class="nav-item" target="_blank">
+                <a href="https://github.com/" class="nav-item" target="_blank">
                     <div class="nav-icon">
-                        <img src="./ico/GetItFree.png" alt="正版中国">
+                        <img src="./ico/GitHub.png" alt="GitHub">
                     </div>
-                    <div class="nav-text">正版中国</div>
+                    <div class="nav-text">GitHub</div>
                 </a>
             </nav>
         </div>
+
+
+        <!-- 分类 -->
+        <div class="category">
+            <div class="category-title" onclick="toggleCategory(this)">💾 设计编辑</div>
+            <nav class="nav-grid">
+                <a href="https://mp.weixin.qq.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/WeChat.png" alt="微信公众平台">
+                    </div>
+                    <div class="nav-text">微信公众号</div>
+                </a>
+                <a href="https://xiumi.us/#/studio/papers" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/xiumi.png" alt="秀米">
+                    </div>
+                    <div class="nav-text">秀米</div>
+                </a>
+                <a href="https://www.feishu.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/feishu.png" alt="飞书">
+                    </div>
+                    <div class="nav-text">飞书</div>
+                </a>
+                <a href="https://www.figma.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/figma.png" alt="Figma">
+                    </div>
+                    <div class="nav-text">Figma</div>
+                </a>
+                <a href="https://js.design/workspace" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/jishisheji.png" alt="即时设计">
+                    </div>
+                    <div class="nav-text">即时设计</div>
+                </a>
+                <a href="https://www.gaoding.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/gaoding.png" alt="稿定设计">
+                    </div>
+                    <div class="nav-text">稿定设计</div>
+                </a>
+                <a href="file:///D:/QRBTF%201.3/index.html" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/QRBTF.png" alt="QRBTF">
+                    </div>
+                    <div class="nav-text">QRBTF</div>
+                </a>
+                <a href="https://moonvy.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/moonvy.png" alt="Moonvy 月维">
+                    </div>
+                    <div class="nav-text">Moonvy 月维</div>
+                </a>
+            </nav>
+        </div>
+
+
 
         <!-- 分类 -->
         <div class="category">
@@ -231,6 +293,18 @@
                         <img src="./ico/baiduaisou.png" alt="百度AI搜索">
                     </div>
                     <div class="nav-text">百度AI搜索</div>
+                </a>
+                <a href="https://grok.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/grok.png" alt="Grok">
+                    </div>
+                    <div class="nav-text">Grok</div>
+                </a>
+                <a href="https://gemini.google.com/app?hl=zh" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/gemini.png" alt="Google Gemini">
+                    </div>
+                    <div class="nav-text">Google Gemini</div>
                 </a>
                 <a href="https://chat.deepseek.com" class="nav-item" target="_blank">
                     <div class="nav-icon">
@@ -264,6 +338,10 @@
                 </a>
             </nav>
         </div>
+
+
+
+
 
         <!-- 分类 -->
         <div class="category">
@@ -356,6 +434,30 @@
         <div class="category">
             <div class="category-title" onclick="toggleCategory(this)">💽 软件下载</div>
             <nav class="nav-grid">
+                <a href="https://lrepacks.net/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/IRepacks.png" alt="IRepacks">
+                    </div>
+                    <div class="nav-text">IRepacks</div>
+                </a>
+                <a href="https://filecr.com/us-en/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/FileCR.png" alt="FileCR">
+                    </div>
+                    <div class="nav-text">FileCR</div>
+                </a>
+                <a href="https://igetintopc.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/iGetIntoPC.png" alt="iGetIntoPC">
+                    </div>
+                    <div class="nav-text">iGetIntoPC</div>
+                </a>
+                <a href="https://pesktop.com/en" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/PeskTop.png" alt="PeskTop">
+                    </div>
+                    <div class="nav-text">PeskTop</div>
+                </a>
                 <a href="https://www.getitfree.cn/" class="nav-item" target="_blank">
                     <div class="nav-icon">
                         <img src="./ico/GetItFree.png" alt="正版中国">
@@ -412,47 +514,13 @@
                 </a>
                 <a href="https://www.dayanzai.me/" class="nav-item" target="_blank">
                     <div class="nav-icon">
-                        <img src="ico/IRepacks.png" alt="IRepacks">
-                    </div>
-                    <div class="nav-text">IRepacks</div>
-                </a>
-                <a href="https://www.dayanzai.me/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
                         <img src="ico/dayanzai.png" alt="大眼仔旭">
                     </div>
                     <div class="nav-text">大眼仔旭</div>
                 </a>
-                <a href="https://myqqjd.com/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/qianqianjingdian.png" alt="芊芊精典">
-                    </div>
-                    <div class="nav-text">芊芊精典</div>
-                </a>
-                <a href="https://www.ypojie.com/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/yipaojie.png" alt="易破解">
-                    </div>
-                    <div class="nav-text">易破解</div>
-                </a>
-                <a href="https://www.dayanzai.me/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/IRepacks.png" alt="IRepacks">
-                    </div>
-                    <div class="nav-text">IRepacks</div>
-                </a>
-                <a href="https://www.dayanzai.me/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/dayanzai.png" alt="大眼仔旭">
-                    </div>
-                    <div class="nav-text">大眼仔旭</div>
-                </a>
+
             </nav>
         </div>
     </div>
-<script>
-function toggleCategory(titleElement) {
-    const grid = titleElement.parentElement.querySelector('.nav-grid');
-    grid.classList.toggle('hidden');
-}
-</script></body>
+</body>
 </html>
