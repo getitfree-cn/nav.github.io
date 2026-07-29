@@ -14,10 +14,6 @@
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
             min-height: 100vh;
             background: url('img/BG.png') no-repeat center center fixed;
@@ -26,39 +22,7 @@
         }
 
         .container {
-            margin: 25px 45px 45px;
-        }
-
-        /* 顶部导航栏样式 */
-        .top-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 27px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .top-nav-item {
-            color: #fff;
-            background-color: #ffffff65;
-            border-radius: 5px;
-            font-size: 18px;
-            font-weight: 500;
-            padding: 6px 14px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-            text-decoration: none;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .top-nav-item:hover {
-            background-color: #ffffff95;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin: 50px;
         }
 
         /* 分类样式 */
@@ -66,7 +30,6 @@
         .category {
             margin-bottom: 14px;
             width: 100%;
-            scroll-margin-top: 20px;
         }
 
         .category-title {
@@ -77,14 +40,11 @@
             font-weight: 500;
             margin-bottom: 20px;
             padding: 2px 10px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-            cursor: pointer; /* 增加手型指针提升交互体验 */
-            user-select: none; /* 防止双击选取文本 */
         }
 
         .nav-grid {
             display: grid;
-            grid-template-columns: repeat(12, minmax(0, 1fr)); /* 固定12列 */
+            grid-template-columns: repeat(12, minmax(0, 1fr)); /* 固定8列 */
             gap: 14px;
             justify-content: start; /* 左对齐 */
         }
@@ -128,17 +88,12 @@
             }
 
             .nav-text {
-                font-size: 14px;
-            }
+            font-size: 14px;
+        }
 
             .category-title {
                 font-size: 17px;
                 margin: 13px auto;
-            }
-
-            .top-nav-item {
-                font-size: 17px;
-                padding: 3px 12px;
             }
         }
 
@@ -154,24 +109,16 @@
             }
 
             .nav-text {
-                font-size: 16px;
-            }
+            font-size: 16px;
+        }
 
             .category-title {
                 font-size: 22px;
                 margin-bottom: 15px;
             }
-
-            .top-nav-item {
-                font-size: 16px;
-            }
         }
 
         @media (max-width: 768px) {
-            .container {
-                margin: 20px 15px;
-            }
-
             .nav-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
@@ -185,90 +132,23 @@
                 font-size: 15px;
                 margin-bottom: 15px;
             }
-
-            .top-nav {
-                gap: 8px;
-                padding: 8px;
-            }
-
-            .top-nav-item {
-                font-size: 13px;
-                padding: 4px 10px;
-            }
         }
     
-        .hidden {
-            display: none !important;
-        }
+    .hidden {
+        display: none !important;
+    }
     </style>
 </head>
 <body>
     <script>
-    // 页面加载完成后恢复保存的折叠状态
-    document.addEventListener('DOMContentLoaded', () => {
-        const collapsedCategories = JSON.parse(localStorage.getItem('collapsedCategories') || '[]');
-        collapsedCategories.forEach(categoryId => {
-            const categoryElem = document.querySelector(`.category[data-id="${categoryId}"]`);
-            if (categoryElem) {
-                const grid = categoryElem.querySelector('.nav-grid');
-                if (grid) grid.classList.add('hidden');
-            }
-        });
-    });
-
-    // 切换折叠状态并持久化保存
     function toggleCategory(titleElement) {
-        const categoryElem = titleElement.parentElement;
-        const categoryId = categoryElem.getAttribute('data-id');
-        const grid = categoryElem.querySelector('.nav-grid');
-        
-        // 切换隐藏状态
-        const isHidden = grid.classList.toggle('hidden');
-        
-        // 读取已存的折叠列表
-        let collapsedCategories = JSON.parse(localStorage.getItem('collapsedCategories') || '[]');
-        
-        if (isHidden) {
-            if (!collapsedCategories.includes(categoryId)) {
-                collapsedCategories.push(categoryId);
-            }
-        } else {
-            collapsedCategories = collapsedCategories.filter(id => id !== categoryId);
-        }
-        
-        // 保存最新的状态回 localStorage
-        localStorage.setItem('collapsedCategories', JSON.stringify(collapsedCategories));
-    }
-
-    // 锚点跳转（如果分类被折叠了，跳转时自动展开）
-    function scrollToCategory(categoryId) {
-        const categoryElem = document.querySelector(`.category[data-id="${categoryId}"]`);
-        if (categoryElem) {
-            const grid = categoryElem.querySelector('.nav-grid');
-            if (grid && grid.classList.contains('hidden')) {
-                const titleElem = categoryElem.querySelector('.category-title');
-                toggleCategory(titleElem);
-            }
-            categoryElem.scrollIntoView({ behavior: 'smooth' });
-        }
+        const grid = titleElement.parentElement.querySelector('.nav-grid');
+        grid.classList.toggle('hidden');
     }
     </script>
     <div class="container">
-        <!-- 顶部快速导航栏 -->
-        <nav class="top-nav">
-            <a href="#common" onclick="scrollToCategory('common'); return false;" class="top-nav-item">常用网站</a>
-            <a href="#design" onclick="scrollToCategory('design'); return false;" class="top-nav-item">设计编辑</a>
-            <a href="#ai" onclick="scrollToCategory('ai'); return false;" class="top-nav-item">AI 搜索</a>
-            <a href="#blog" onclick="scrollToCategory('blog'); return false;" class="top-nav-item">博客网站</a>
-            <a href="#tools" onclick="scrollToCategory('tools'); return false;" class="top-nav-item">在线工具</a>
-            <a href="#pan" onclick="scrollToCategory('pan'); return false;" class="top-nav-item">网盘资源</a>
-            <a href="#assets" onclick="scrollToCategory('assets'); return false;" class="top-nav-item">素材下载</a>
-            <a href="#giveaway" onclick="scrollToCategory('giveaway'); return false;" class="top-nav-item">限免软件</a>
-            <a href="#software" onclick="scrollToCategory('software'); return false;" class="top-nav-item">软件下载</a>
-        </nav>
-
         <!-- 搜索分类 -->
-        <div class="category" id="common" data-id="common">
+        <div class="category">
             <div class="category-title" onclick="toggleCategory(this)">💖 常用网站</div>
             <nav class="nav-grid">
                 <a href="https://www.bilibili.com/" class="nav-item" target="_blank">
@@ -336,7 +216,7 @@
 
 
         <!-- 分类 -->
-        <div class="category" id="design" data-id="design">
+        <div class="category">
             <div class="category-title" onclick="toggleCategory(this)">🎨 设计编辑</div>
             <nav class="nav-grid">
                 <a href="https://mp.weixin.qq.com/" class="nav-item" target="_blank">
@@ -397,8 +277,74 @@
         </div>
 
 
+
         <!-- 分类 -->
-        <div class="category" id="ai" data-id="ai">
+        <div class="category">
+            <div class="category-title" onclick="toggleCategory(this)">🗒️ 博客网站</div>
+            <nav class="nav-grid">
+                <a href="https://www.ytechb.com/category/stock-wallpapers/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/ytechb.png" alt="YTECHB">
+                    </div>
+                    <div class="nav-text">YTECHB</div>
+                </a>
+                <a href="https://insectaintegration.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/IISDW.png" alt="IISDW">
+                    </div>
+                    <div class="nav-text">IISDW</div>
+                </a>
+                <a href="https://www.reddit.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/reddit.png" alt="Reddit">
+                    </div>
+                    <div class="nav-text">Reddit</div>
+                </a>
+                <a href="https://basicappleguy.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/basicappleguy.png" alt="basicappleguy">
+                    </div>
+                    <div class="nav-text">basicapple</div>
+                </a>
+            </nav>
+        </div>
+
+
+        <!-- 分类 -->
+        <div class="category">
+            <div class="category-title" onclick="toggleCategory(this)">🧰 在线工具</div>
+            <nav class="nav-grid">
+                <a href="https://marstab.com/nav" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/marstab.png" alt="火星标签页">
+                    </div>
+                    <div class="nav-text">火星标签页</div>
+                </a>
+                <a href="https://redvid.io/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/reddit-dl.png" alt="reddit-dl">
+                    </div>
+                    <div class="nav-text">Reddit DL</div>
+                </a>
+                <a href="https://instag.com/?lang=zh" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/instagramdl.png" alt="ins-dl">
+                    </div>
+                    <div class="nav-text">INS DL</div>
+                </a>
+                <a href="https://apps.apple.com/us/iphone/today" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/appstore.png" alt="App Store">
+                    </div>
+                    <div class="nav-text">App Store</div>
+                </a>
+            </nav>
+        </div>
+
+
+
+        <!-- 分类 -->
+        <div class="category">
             <div class="category-title" onclick="toggleCategory(this)">🔎 AI 搜索</div>
             <nav class="nav-grid">
                 <a href="https://grok.com/" class="nav-item" target="_blank">
@@ -490,72 +436,10 @@
 
 
 
-        <!-- 分类 -->
-        <div class="category" id="blog" data-id="blog">
-            <div class="category-title" onclick="toggleCategory(this)">🗒️ 博客网站</div>
-            <nav class="nav-grid">
-                <a href="https://www.ytechb.com/category/stock-wallpapers/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/ytechb.png" alt="YTECHB">
-                    </div>
-                    <div class="nav-text">YTECHB</div>
-                </a>
-                <a href="https://insectaintegration.com/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/IISDW.png" alt="IISDW">
-                    </div>
-                    <div class="nav-text">IISDW</div>
-                </a>
-                <a href="https://www.reddit.com/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/reddit.png" alt="Reddit">
-                    </div>
-                    <div class="nav-text">Reddit</div>
-                </a>
-                <a href="https://basicappleguy.com/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/basicappleguy.png" alt="basicappleguy">
-                    </div>
-                    <div class="nav-text">basicapple</div>
-                </a>
-            </nav>
-        </div>
 
 
         <!-- 分类 -->
-        <div class="category" id="tools" data-id="tools">
-            <div class="category-title" onclick="toggleCategory(this)">🧰 在线工具</div>
-            <nav class="nav-grid">
-                <a href="https://marstab.com/nav" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="./ico/marstab.png" alt="火星标签页">
-                    </div>
-                    <div class="nav-text">火星标签页</div>
-                </a>
-                <a href="https://redvid.io/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/reddit-dl.png" alt="reddit-dl">
-                    </div>
-                    <div class="nav-text">Reddit DL</div>
-                </a>
-                <a href="https://instag.com/?lang=zh" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/instagramdl.png" alt="ins-dl">
-                    </div>
-                    <div class="nav-text">INS DL</div>
-                </a>
-                <a href="https://apps.apple.com/us/iphone/today" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="ico/appstore.png" alt="App Store">
-                    </div>
-                    <div class="nav-text">App Store</div>
-                </a>
-            </nav>
-        </div>
-
-
-        <!-- 分类 -->
-        <div class="category" id="pan" data-id="pan">
+        <div class="category">
             <div class="category-title" onclick="toggleCategory(this)">💾 网盘资源</div>
             <nav class="nav-grid">
                 <a href="http://160.202.47.249:15151" class="nav-item" target="_blank">
@@ -592,8 +476,11 @@
         </div>
 
 
+
+
+
         <!-- 分类 -->
-        <div class="category" id="assets" data-id="assets">
+        <div class="category">
             <div class="category-title" onclick="toggleCategory(this)">🎬 素材下载</div>
             <nav class="nav-grid">
                 <a href="https://c4dsky.com" class="nav-item" target="_blank">
@@ -642,8 +529,10 @@
         </div>
 
 
+
+
         <!-- 分类 -->
-        <div class="category" id="giveaway" data-id="giveaway">
+        <div class="category">
             <div class="category-title" onclick="toggleCategory(this)">🎬 限免软件</div>
             <nav class="nav-grid">
                 <a href="https://thesoftware.shop/" class="nav-item" target="_blank">
@@ -687,7 +576,7 @@
 
 
         <!-- 分类 -->
-        <div class="category" id="software" data-id="software">
+        <div class="category">
             <div class="category-title" onclick="toggleCategory(this)">💽 软件下载</div>
             <nav class="nav-grid">
                 <a href="https://lrepacks.net/" class="nav-item" target="_blank">
@@ -774,6 +663,7 @@
                     </div>
                     <div class="nav-text">大眼仔旭</div>
                 </a>
+
             </nav>
         </div>
     </div>
