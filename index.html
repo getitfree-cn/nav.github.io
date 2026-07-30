@@ -62,7 +62,6 @@
         }
 
         /* 分类样式 */
-
         .category {
             margin-bottom: 14px;
             width: 100%;
@@ -78,15 +77,15 @@
             margin-bottom: 20px;
             padding: 2px 10px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-            cursor: pointer; /* 增加手型指针提升交互体验 */
-            user-select: none; /* 防止双击选取文本 */
+            cursor: pointer;
+            user-select: none;
         }
 
         .nav-grid {
             display: grid;
-            grid-template-columns: repeat(12, minmax(0, 1fr)); /* 固定12列 */
+            grid-template-columns: repeat(12, minmax(0, 1fr)); /* 默认固定12列 */
             gap: 14px;
-            justify-content: start; /* 左对齐 */
+            justify-content: start;
         }
 
         .nav-item {
@@ -94,12 +93,18 @@
             color: #fff;
             text-align: center;
             padding: 0px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .nav-icon {
             width: 140px;
             height: 140px;
             margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .nav-icon img {
@@ -114,8 +119,12 @@
             letter-spacing: 0px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
             line-height: 1.5;
+            word-break: break-word;
         }
 
+        /* ------------------- 响应式媒体查询优化 ------------------- */
+
+        /* 1920px 级显示限制 */
         @media (max-width: 1920px) {
             .nav-grid {
                 grid-template-columns: repeat(12, 1fr);
@@ -124,7 +133,8 @@
             
             .nav-icon {
                 width: 100%;
-                height: 80%;
+                height: auto;
+                aspect-ratio: 1 / 1;
             }
 
             .nav-text {
@@ -142,61 +152,101 @@
             }
         }
 
+        /* 平板端 / 中等屏幕适配 (最大 1280px) */
         @media (max-width: 1280px) {
+            .container {
+                margin: 20px 25px;
+            }
+
             .nav-grid {
-                grid-template-columns: repeat(6, 1fr);
-                gap: 30px;
+                grid-template-columns: repeat(8, 1fr); /* 调整为8列更紧凑 */
+                gap: 14px;
             }
             
             .nav-icon {
                 width: 100%;
-                height: 82%;
+                height: auto;
+                aspect-ratio: 1 / 1;
             }
 
             .nav-text {
-                font-size: 16px;
+                font-size: 14px;
             }
 
             .category-title {
-                font-size: 22px;
+                font-size: 20px;
                 margin-bottom: 15px;
             }
 
             .top-nav-item {
-                font-size: 16px;
+                font-size: 15px;
             }
         }
 
+        /* 小平板 / 大屏手机适配 (最大 992px) */
+        @media (max-width: 992px) {
+            .nav-grid {
+                grid-template-columns: repeat(6, 1fr); /* 缩减为6列 */
+                gap: 12px;
+            }
+        }
+
+        /* 手机端适配 (最大 768px) - 追求高度紧凑与舒适手持 */
         @media (max-width: 768px) {
             .container {
-                margin: 20px 15px;
-            }
-
-            .nav-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .nav-icon {
-                width: 100px;
-                height: 100px;
-            }
-
-            .category-title {
-                font-size: 15px;
-                margin-bottom: 15px;
+                margin: 12px 10px; /* 减小边距，增加视口利用率 */
             }
 
             .top-nav {
-                gap: 8px;
-                padding: 8px;
+                gap: 6px;
+                margin-bottom: 16px;
             }
 
             .top-nav-item {
-                font-size: 13px;
-                padding: 4px 10px;
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .category {
+                margin-bottom: 12px;
+            }
+
+            .category-title {
+                font-size: 16px;
+                margin-bottom: 10px;
+                padding: 4px 8px;
+            }
+
+            .nav-grid {
+                grid-template-columns: repeat(6, 1fr); /* 手机端使用4列，间距更合理 */
+                gap: 10px;
+            }
+            
+            .nav-icon {
+                width: 100%; /* 限制宽度防止占满格子过大 */
+                max-width: 100px;
+                height: auto;
+                aspect-ratio: 1 / 1;
+                margin-bottom: 4px;
+            }
+
+            .nav-text {
+                font-size: 11px;
+                line-height: 1.2;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis; /* 文字过长自动省略号 */
+                max-width: 100%;
             }
         }
-    
+
+        /* 超小屏手机适配 (最大 380px) */
+        @media (max-width: 380px) {
+            .nav-grid {
+                grid-template-columns: repeat(4, 1fr); /* 极窄屏幕转为3列 */
+            }
+        }
+
         .hidden {
             display: none !important;
         }
@@ -307,12 +357,6 @@
                     </div>
                     <div class="nav-text">X</div>
                 </a>
-                <a href="https://35c2bf8f.free-img-27n.pages.dev/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="./ico/imghost.png" alt="图床">
-                    </div>
-                    <div class="nav-text">图床</div>
-                </a>
                 <a href="https://github.com/" class="nav-item" target="_blank">
                     <div class="nav-icon">
                         <img src="./ico/GitHub.png" alt="GitHub">
@@ -325,26 +369,13 @@
                     </div>
                     <div class="nav-text">flomo</div>
                 </a>
-                <a href="https://img.131213.xyz/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="./ico/imghost.png" alt="图床">
-                    </div>
-                    <div class="nav-text">131图床</div>
-                </a>
             </nav>
         </div>
-
 
         <!-- 分类 -->
         <div class="category" id="design" data-id="design">
             <div class="category-title" onclick="toggleCategory(this)">🎨 设计编辑</div>
             <nav class="nav-grid">
-                <a href="https://mp.weixin.qq.com/" class="nav-item" target="_blank">
-                    <div class="nav-icon">
-                        <img src="./ico/WeChat.png" alt="微信公众平台">
-                    </div>
-                    <div class="nav-text">公众号</div>
-                </a>
                 <a href="https://xiumi.us/#/studio/papers" class="nav-item" target="_blank">
                     <div class="nav-icon">
                         <img src="./ico/xiumi.png" alt="秀米">
@@ -387,15 +418,26 @@
                     </div>
                     <div class="nav-text">Moonvy</div>
                 </a>
+                <a href="https://img.131213.xyz/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/imghost.png" alt="图床">
+                    </div>
+                    <div class="nav-text">131图床</div>
+                </a>
                 <a href="D:\HTML\Color Palette V4.0.html" class="nav-item" target="_blank">
                     <div class="nav-icon">
                         <img src="https://free-img-27n.pages.dev/api/rfile/ColorPalette.png" alt="ColorPalette">
                     </div>
                     <div class="nav-text">ColorPalette</div>
                 </a>
+                <a href="https://35c2bf8f.free-img-27n.pages.dev/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/imghost.png" alt="图床">
+                    </div>
+                    <div class="nav-text">图床</div>
+                </a>
             </nav>
         </div>
-
 
         <!-- 分类 -->
         <div class="category" id="ai" data-id="ai">
@@ -488,12 +530,40 @@
             </nav>
         </div>
 
-
-
         <!-- 分类 -->
         <div class="category" id="blog" data-id="blog">
-            <div class="category-title" onclick="toggleCategory(this)">🗒️ 博客网站</div>
+            <div class="category-title" onclick="toggleCategory(this)">🗒️ 博客内容</div>
             <nav class="nav-grid">
+                <a href="https://mp.weixin.qq.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/WeChat.png" alt="微信公众平台">
+                    </div>
+                    <div class="nav-text">公众号</div>
+                </a>
+                <a href="https://www.youtube.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/YouTub.png" alt="YouTube">
+                    </div>
+                    <div class="nav-text">YouTube</div>
+                </a>
+                <a href="https://www.instagram.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/Instagram.png" alt="Instagram">
+                    </div>
+                    <div class="nav-text">Instagram</div>
+                </a>
+                <a href="https://x.com/home" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/X.png" alt="X">
+                    </div>
+                    <div class="nav-text">X</div>
+                </a>
+                <a href="https://github.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/GitHub.png" alt="GitHub">
+                    </div>
+                    <div class="nav-text">GitHub</div>
+                </a>
                 <a href="https://www.ytechb.com/category/stock-wallpapers/" class="nav-item" target="_blank">
                     <div class="nav-icon">
                         <img src="ico/ytechb.png" alt="YTECHB">
@@ -520,7 +590,6 @@
                 </a>
             </nav>
         </div>
-
 
         <!-- 分类 -->
         <div class="category" id="tools" data-id="tools">
@@ -552,7 +621,6 @@
                 </a>
             </nav>
         </div>
-
 
         <!-- 分类 -->
         <div class="category" id="pan" data-id="pan">
@@ -590,7 +658,6 @@
                 </a>
             </nav>
         </div>
-
 
         <!-- 分类 -->
         <div class="category" id="assets" data-id="assets">
@@ -641,7 +708,6 @@
             </nav>
         </div>
 
-
         <!-- 分类 -->
         <div class="category" id="giveaway" data-id="giveaway">
             <div class="category-title" onclick="toggleCategory(this)">🎬 限免软件</div>
@@ -684,7 +750,6 @@
                 </a>
             </nav>
         </div>
-
 
         <!-- 分类 -->
         <div class="category" id="software" data-id="software">

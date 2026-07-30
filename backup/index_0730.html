@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的导航</title>
+    <link rel="icon" href="./nav.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./nav.ico" type="image/x-icon">
+    <style>
+        * {
+            font-family: SF Pro SC, SF Pro Text, SF Pro Icons, PingFang SC, Helvetica Neue, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url('img/BG.png') no-repeat center center fixed;
+            background-size: cover;
+            padding: 5px 0;
+        }
+
+        .container {
+            margin: 25px 45px 45px;
+        }
+
+        /* 顶部导航栏样式 */
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 27px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .top-nav-item {
+            color: #fff;
+            background-color: #ffffff65;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 6px 14px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            text-decoration: none;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .top-nav-item:hover {
+            background-color: #ffffff95;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 分类样式 */
+
+        .category {
+            margin-bottom: 14px;
+            width: 100%;
+            scroll-margin-top: 20px;
+        }
+
+        .category-title {
+            color: #fff;
+            background-color: #ffffff65;
+            border-radius: 5px;
+            font-size: 25px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding: 2px 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            cursor: pointer; /* 增加手型指针提升交互体验 */
+            user-select: none; /* 防止双击选取文本 */
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr)); /* 固定12列 */
+            gap: 14px;
+            justify-content: start; /* 左对齐 */
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #fff;
+            text-align: center;
+            padding: 0px;
+        }
+
+        .nav-icon {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 8px;
+        }
+
+        .nav-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .nav-text {
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 0px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1920px) {
+            .nav-grid {
+                grid-template-columns: repeat(12, 1fr);
+                gap: 20px;
+            }
+            
+            .nav-icon {
+                width: 100%;
+                height: 80%;
+            }
+
+            .nav-text {
+                font-size: 14px;
+            }
+
+            .category-title {
+                font-size: 17px;
+                margin: 13px auto;
+            }
+
+            .top-nav-item {
+                font-size: 17px;
+                padding: 3px 12px;
+            }
+        }
+
+        @media (max-width: 1280px) {
+            .nav-grid {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 20px;
+            }
+            
+            .nav-icon {
+                width: 100%;
+                height: 82%;
+            }
+
+            .nav-text {
+                font-size: 16px;
+            }
+
+            .category-title {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+            .top-nav-item {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px 15px;
+            }
+
+            .nav-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .nav-icon {
+                width: 100%;
+                height: 50%;
+            }
+
+            .nav-text {
+                font-size: 12px;
+                overflow: hidden;
+            }
+
+            .category-title {
+                font-size: 15px;
+                margin-bottom: 15px;
+            }
+
+            .top-nav {
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .top-nav-item {
+                font-size: 13px;
+                padding: 4px 10px;
+            }
+        }
+    
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <script>
+    // 页面加载完成后恢复保存的折叠状态
+    document.addEventListener('DOMContentLoaded', () => {
+        const collapsedCategories = JSON.parse(localStorage.getItem('collapsedCategories') || '[]');
+        collapsedCategories.forEach(categoryId => {
+            const categoryElem = document.querySelector(`.category[data-id="${categoryId}"]`);
+            if (categoryElem) {
+                const grid = categoryElem.querySelector('.nav-grid');
+                if (grid) grid.classList.add('hidden');
+            }
+        });
+    });
+
+    // 切换折叠状态并持久化保存
+    function toggleCategory(titleElement) {
+        const categoryElem = titleElement.parentElement;
+        const categoryId = categoryElem.getAttribute('data-id');
+        const grid = categoryElem.querySelector('.nav-grid');
+        
+        // 切换隐藏状态
+        const isHidden = grid.classList.toggle('hidden');
+        
+        // 读取已存的折叠列表
+        let collapsedCategories = JSON.parse(localStorage.getItem('collapsedCategories') || '[]');
+        
+        if (isHidden) {
+            if (!collapsedCategories.includes(categoryId)) {
+                collapsedCategories.push(categoryId);
+            }
+        } else {
+            collapsedCategories = collapsedCategories.filter(id => id !== categoryId);
+        }
+        
+        // 保存最新的状态回 localStorage
+        localStorage.setItem('collapsedCategories', JSON.stringify(collapsedCategories));
+    }
+
+    // 锚点跳转（如果分类被折叠了，跳转时自动展开）
+    function scrollToCategory(categoryId) {
+        const categoryElem = document.querySelector(`.category[data-id="${categoryId}"]`);
+        if (categoryElem) {
+            const grid = categoryElem.querySelector('.nav-grid');
+            if (grid && grid.classList.contains('hidden')) {
+                const titleElem = categoryElem.querySelector('.category-title');
+                toggleCategory(titleElem);
+            }
+            categoryElem.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    </script>
+    <div class="container">
+        <!-- 顶部快速导航栏 -->
+        <nav class="top-nav">
+            <a href="#common" onclick="scrollToCategory('common'); return false;" class="top-nav-item">常用网站</a>
+            <a href="#design" onclick="scrollToCategory('design'); return false;" class="top-nav-item">设计编辑</a>
+            <a href="#ai" onclick="scrollToCategory('ai'); return false;" class="top-nav-item">AI 搜索</a>
+            <a href="#blog" onclick="scrollToCategory('blog'); return false;" class="top-nav-item">博客网站</a>
+            <a href="#tools" onclick="scrollToCategory('tools'); return false;" class="top-nav-item">在线工具</a>
+            <a href="#pan" onclick="scrollToCategory('pan'); return false;" class="top-nav-item">网盘资源</a>
+            <a href="#assets" onclick="scrollToCategory('assets'); return false;" class="top-nav-item">素材下载</a>
+            <a href="#giveaway" onclick="scrollToCategory('giveaway'); return false;" class="top-nav-item">限免软件</a>
+            <a href="#software" onclick="scrollToCategory('software'); return false;" class="top-nav-item">软件下载</a>
+        </nav>
+
+        <!-- 搜索分类 -->
+        <div class="category" id="common" data-id="common">
+            <div class="category-title" onclick="toggleCategory(this)">💖 常用网站</div>
+            <nav class="nav-grid">
+                <a href="https://www.bilibili.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/bilibili3.png" alt="哔哩哔哩">
+                    </div>
+                    <div class="nav-text">哔哩哔哩</div>
+                </a>
+                <a href="https://www.google.com/?hl=zh-cn" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/Google.png" alt="谷歌">
+                    </div>
+                    <div class="nav-text">Google</div>
+                </a>
+                <a href="https://mp.weixin.qq.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/WeChat.png" alt="微信公众平台">
+                    </div>
+                    <div class="nav-text">公众号</div>
+                </a>
+                <a href="https://www.youtube.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/YouTub.png" alt="YouTube">
+                    </div>
+                    <div class="nav-text">YouTube</div>
+                </a>
+                <a href="https://www.instagram.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/Instagram.png" alt="Instagram">
+                    </div>
+                    <div class="nav-text">Instagram</div>
+                </a>
+                <a href="https://x.com/home" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/X.png" alt="X">
+                    </div>
+                    <div class="nav-text">X</div>
+                </a>
+                <a href="https://github.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/GitHub.png" alt="GitHub">
+                    </div>
+                    <div class="nav-text">GitHub</div>
+                </a>
+                <a href="https://v.flomoapp.com/mine" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="https://free-img-27n.pages.dev/api/rfile/flomo.png" alt="flomo">
+                    </div>
+                    <div class="nav-text">flomo</div>
+                </a>
+            </nav>
+        </div>
+
+
+        <!-- 分类 -->
+        <div class="category" id="design" data-id="design">
+            <div class="category-title" onclick="toggleCategory(this)">🎨 设计编辑</div>
+            <nav class="nav-grid">
+                <a href="https://xiumi.us/#/studio/papers" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/xiumi.png" alt="秀米">
+                    </div>
+                    <div class="nav-text">秀米</div>
+                </a>
+                <a href="https://www.feishu.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/feishu.png" alt="飞书">
+                    </div>
+                    <div class="nav-text">飞书</div>
+                </a>
+                <a href="https://www.figma.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/figma.png" alt="Figma">
+                    </div>
+                    <div class="nav-text">Figma</div>
+                </a>
+                <a href="https://js.design/workspace" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/jishisheji.png" alt="即时设计">
+                    </div>
+                    <div class="nav-text">即时设计</div>
+                </a>
+                <a href="https://www.gaoding.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/gaoding.png" alt="稿定设计">
+                    </div>
+                    <div class="nav-text">稿定设计</div>
+                </a>
+                <a href="file:///D:/QRBTF%201.3/index.html" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/QRBTF.png" alt="QRBTF">
+                    </div>
+                    <div class="nav-text">QRBTF</div>
+                </a>
+                <a href="https://moonvy.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/moonvy.png" alt="Moonvy 月维">
+                    </div>
+                    <div class="nav-text">Moonvy</div>
+                </a>
+                <a href="https://img.131213.xyz/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/imghost.png" alt="图床">
+                    </div>
+                    <div class="nav-text">131图床</div>
+                </a>
+                <a href="D:\HTML\Color Palette V4.0.html" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="https://free-img-27n.pages.dev/api/rfile/ColorPalette.png" alt="ColorPalette">
+                    </div>
+                    <div class="nav-text">ColorPalette</div>
+                </a>
+                <a href="https://35c2bf8f.free-img-27n.pages.dev/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/imghost.png" alt="图床">
+                    </div>
+                    <div class="nav-text">图床</div>
+                </a>
+            </nav>
+        </div>
+
+
+        <!-- 分类 -->
+        <div class="category" id="ai" data-id="ai">
+            <div class="category-title" onclick="toggleCategory(this)">🔎 AI 搜索</div>
+            <nav class="nav-grid">
+                <a href="https://grok.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/grok.png" alt="Grok">
+                    </div>
+                    <div class="nav-text">Grok</div>
+                </a>
+                <a href="https://gemini.google.com/app?hl=zh" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/gemini.png" alt="Google Gemini">
+                    </div>
+                    <div class="nav-text">Gemini</div>
+                </a>
+                <a href="https://chatgpt.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/chatgpt.png" alt="ChatGPT">
+                    </div>
+                    <div class="nav-text">ChatGPT</div>
+                </a>
+                <a href="https://freetochat.app/app/chat" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/freetochat.png" alt="FreeToChat">
+                    </div>
+                    <div class="nav-text">FreeToChat</div>
+                </a>
+                <a href="https://chat.deepseek.com" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/DeepSeek.png" alt="DeepSeek">
+                    </div>
+                    <div class="nav-text">DeepSeek</div>
+                </a>
+                <a href="https://www.tongyi.com/qianwen/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/qianwen.png" alt="通义">
+                    </div>
+                    <div class="nav-text">千问</div>
+                </a>
+                <a href="https://xinghuo.xfyun.cn/desk" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/xunfeixinghuo.png" alt="讯飞星火">
+                    </div>
+                    <div class="nav-text">讯飞星火</div>
+                </a>
+                <a href="https://www.doubao.com/chat/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/doubao.png" alt="豆包">
+                    </div>
+                    <div class="nav-text">豆包</div>
+                </a>
+                <a href="https://yiyan.baidu.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/wenxinyiyan.png" alt="文心一言">
+                    </div>
+                    <div class="nav-text">文心一言</div>
+                </a>
+                <a href="https://chat.baidu.com/search" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/baiduaisou.png" alt="百度AI搜索">
+                    </div>
+                    <div class="nav-text">百度AI</div>
+                </a>
+                <a href="https://ai.quark.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/quark.png" alt="夸克">
+                    </div>
+                    <div class="nav-text">夸克</div>
+                </a>
+                <a href="https://www.kimi.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/kimi.png" alt="KIMI">
+                    </div>
+                    <div class="nav-text">KIMI</div>
+                </a>
+                <a href="https://yuanbao.tencent.com/chat/naQivTmsDa" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/tencentyuanbao.png" alt="腾讯元宝">
+                    </div>
+                    <div class="nav-text">元宝</div>
+                </a>
+                <a href="https://chat.antafu.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/afu.png" alt="蚂蚁阿福">
+                    </div>
+                    <div class="nav-text">阿福</div>
+                </a>
+            </nav>
+        </div>
+
+
+
+        <!-- 分类 -->
+        <div class="category" id="blog" data-id="blog">
+            <div class="category-title" onclick="toggleCategory(this)">🗒️ 博客内容</div>
+            <nav class="nav-grid">
+                <a href="https://mp.weixin.qq.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/WeChat.png" alt="微信公众平台">
+                    </div>
+                    <div class="nav-text">公众号</div>
+                </a>
+                <a href="https://www.youtube.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/YouTub.png" alt="YouTube">
+                    </div>
+                    <div class="nav-text">YouTube</div>
+                </a>
+                <a href="https://www.instagram.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/Instagram.png" alt="Instagram">
+                    </div>
+                    <div class="nav-text">Instagram</div>
+                </a>
+                <a href="https://x.com/home" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/X.png" alt="X">
+                    </div>
+                    <div class="nav-text">X</div>
+                </a>
+                <a href="https://github.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/GitHub.png" alt="GitHub">
+                    </div>
+                    <div class="nav-text">GitHub</div>
+                </a>
+                <a href="https://www.ytechb.com/category/stock-wallpapers/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/ytechb.png" alt="YTECHB">
+                    </div>
+                    <div class="nav-text">YTECHB</div>
+                </a>
+                <a href="https://insectaintegration.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/IISDW.png" alt="IISDW">
+                    </div>
+                    <div class="nav-text">IISDW</div>
+                </a>
+                <a href="https://www.reddit.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/reddit.png" alt="Reddit">
+                    </div>
+                    <div class="nav-text">Reddit</div>
+                </a>
+                <a href="https://basicappleguy.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/basicappleguy.png" alt="basicappleguy">
+                    </div>
+                    <div class="nav-text">basicapple</div>
+                </a>
+            </nav>
+        </div>
+
+
+        <!-- 分类 -->
+        <div class="category" id="tools" data-id="tools">
+            <div class="category-title" onclick="toggleCategory(this)">🧰 在线工具</div>
+            <nav class="nav-grid">
+                <a href="https://marstab.com/nav" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/marstab.png" alt="火星标签页">
+                    </div>
+                    <div class="nav-text">火星标签页</div>
+                </a>
+                <a href="https://redvid.io/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/reddit-dl.png" alt="reddit-dl">
+                    </div>
+                    <div class="nav-text">Reddit DL</div>
+                </a>
+                <a href="https://instag.com/?lang=zh" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/instagramdl.png" alt="ins-dl">
+                    </div>
+                    <div class="nav-text">INS DL</div>
+                </a>
+                <a href="https://apps.apple.com/us/iphone/today" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/appstore.png" alt="App Store">
+                    </div>
+                    <div class="nav-text">App Store</div>
+                </a>
+            </nav>
+        </div>
+
+
+        <!-- 分类 -->
+        <div class="category" id="pan" data-id="pan">
+            <div class="category-title" onclick="toggleCategory(this)">💾 网盘资源</div>
+            <nav class="nav-grid">
+                <a href="http://160.202.47.249:15151" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/cloud.png" alt="云盘搜索">
+                    </div>
+                    <div class="nav-text">云盘搜索</div>
+                </a>
+                <a href="https://pan.qianfan.app/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/qianfansousuo.png" alt="千帆搜索">
+                    </div>
+                    <div class="nav-text">千帆</div>
+                </a>
+                <a href="https://yiso.eu.org/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/yisou.png" alt="易搜">
+                    </div>
+                    <div class="nav-text">易搜</div>
+                </a>
+                <a href="http://yunpanziyuan.top/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/yunpanziyuan.png" alt="云盘资源网">
+                    </div>
+                    <div class="nav-text">云盘资源网</div>
+                </a>
+                <a href="https://www.lzpanx.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/lanpan.png" alt="懒盘搜索">
+                    </div>
+                    <div class="nav-text">懒盘搜索</div>
+                </a>
+            </nav>
+        </div>
+
+
+        <!-- 分类 -->
+        <div class="category" id="assets" data-id="assets">
+            <div class="category-title" onclick="toggleCategory(this)">🎬 素材下载</div>
+            <nav class="nav-grid">
+                <a href="https://c4dsky.com" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/shusheng.png" alt="书生CG资源站">
+                    </div>
+                    <div class="nav-text">书生CG</div>
+                </a>
+                <a href="https://www.lookae.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/dazhonglian.png" alt="LookAE">
+                    </div>
+                    <div class="nav-text">LookAE</div>
+                </a>
+                <a href="https://www.gfxcamp.com" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/quchiyihao.png" alt="龋齿一号">
+                    </div>
+                    <div class="nav-text">龋齿一号</div>
+                </a>
+                <a href="https://www.talkae.com" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/taoke.png" alt="韬客AE">
+                    </div>
+                    <div class="nav-text">韬客AE</div>
+                </a>
+                <a href="http://suby.cn/vip/vipshow" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/subai.png" alt="素白">
+                    </div>
+                    <div class="nav-text">素白</div>
+                </a>
+                <a href="http://www.modown.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/modun.png" alt="魔顿网">
+                    </div>
+                    <div class="nav-text">魔顿网</div>
+                </a>
+                <a href="https://www.videocopilot.net/tutorials/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/vc.png" alt="VideoCopilot教程">
+                    </div>
+                    <div class="nav-text">VideoCopilot</div>
+                </a>
+            </nav>
+        </div>
+
+
+        <!-- 分类 -->
+        <div class="category" id="giveaway" data-id="giveaway">
+            <div class="category-title" onclick="toggleCategory(this)">🎬 限免软件</div>
+            <nav class="nav-grid">
+                <a href="https://thesoftware.shop/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/thesoftware.png" alt="thesoftware.shop">
+                    </div>
+                    <div class="nav-text">SW.Shop</div>
+                </a>
+                <a href="https://giveaway.tickcoupon.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/tickcoupon.png" alt="tickcoupon">
+                    </div>
+                    <div class="nav-text">Tickcoupon</div>
+                </a>
+                <a href="https://sharewareonsale.com/product-tag/giveaway+active-deals" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/sharewareonsale.png" alt="sharewareonsale">
+                    </div>
+                    <div class="nav-text">SW.onsale</div>
+                </a>
+                <a href="https://www.giveawayoftheday.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/giveawayoftheday.png" alt="GOTD">
+                    </div>
+                    <div class="nav-text">GOTD</div>
+                </a>
+                <a href="https://techno360.in/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/techno360.png" alt="techno360">
+                    </div>
+                    <div class="nav-text">techno360</div>
+                </a>
+                <a href="https://gofans.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/GoFans.png" alt="gofans">
+                    </div>
+                    <div class="nav-text">gofans</div>
+                </a>
+            </nav>
+        </div>
+
+
+        <!-- 分类 -->
+        <div class="category" id="software" data-id="software">
+            <div class="category-title" onclick="toggleCategory(this)">💽 软件下载</div>
+            <nav class="nav-grid">
+                <a href="https://lrepacks.net/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/IRepacks.png" alt="IRepacks">
+                    </div>
+                    <div class="nav-text">IRepacks</div>
+                </a>
+                <a href="https://filecr.com/us-en/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/FileCR.png" alt="FileCR">
+                    </div>
+                    <div class="nav-text">FileCR</div>
+                </a>
+                <a href="https://igetintopc.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/iGetIntoPC.png" alt="iGetIntoPC">
+                    </div>
+                    <div class="nav-text">iGetIntoPC</div>
+                </a>
+                <a href="https://pesktop.com/en" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/PeskTop.png" alt="PeskTop">
+                    </div>
+                    <div class="nav-text">PeskTop</div>
+                </a>
+                <a href="https://www.getitfree.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/GetItFree.png" alt="正版中国">
+                    </div>
+                    <div class="nav-text">正版中国</div>
+                </a>
+                <a href="https://www.appinn.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/xiaozhong.png" alt="小众软件">
+                    </div>
+                    <div class="nav-text">小众软件</div>
+                </a>
+                <a href="https://www.iplaysoft.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/yiciyuan.png" alt="异次元软件">
+                    </div>
+                    <div class="nav-text">异次元软件</div>
+                </a>
+                <a href="https://www.52pojie.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/52.png" alt="吾爱破解">
+                    </div>
+                    <div class="nav-text">吾爱破解</div>
+                </a>
+                <a href="https://www.mpyit.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/mpy.png" alt="殁漂遥">
+                    </div>
+                    <div class="nav-text">殁漂遥</div>
+                </a>
+                <a href="https://www.ghxi.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/guohe.png" alt="果核剥壳">
+                    </div>
+                    <div class="nav-text">果核剥壳</div>
+                </a>
+                <a href="https://www.423down.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/423.png" alt="423down">
+                    </div>
+                    <div class="nav-text">423down</div>
+                </a>
+                <a href="https://myqqjd.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/qianqianjingdian.png" alt="芊芊精典">
+                    </div>
+                    <div class="nav-text">芊芊精典</div>
+                </a>
+                <a href="https://www.ypojie.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/yipaojie.png" alt="易破解">
+                    </div>
+                    <div class="nav-text">易破解</div>
+                </a>
+                <a href="https://www.dayanzai.me/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="ico/dayanzai.png" alt="大眼仔旭">
+                    </div>
+                    <div class="nav-text">大眼仔旭</div>
+                </a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
