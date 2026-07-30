@@ -96,11 +96,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%; /* 约束每个 item 充满网格单元格 */
+            overflow: hidden; /* 防止溢出 */
         }
 
         .nav-icon {
-            width: 140px;
-            height: 140px;
+            width: 100%;
+            max-width: 140px;
+            aspect-ratio: 1 / 1;
             margin: 0 auto 8px;
             display: flex;
             align-items: center;
@@ -114,12 +117,14 @@
         }
 
         .nav-text {
+            width: 100%;
             font-size: 20px;
             font-weight: 500;
             letter-spacing: 0px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
             line-height: 1.5;
             word-break: break-word;
+            text-align: center;
         }
 
         /* ------------------- 响应式媒体查询优化 ------------------- */
@@ -132,9 +137,7 @@
             }
             
             .nav-icon {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 1 / 1;
+                max-width: 100%;
             }
 
             .nav-text {
@@ -159,16 +162,10 @@
             }
 
             .nav-grid {
-                grid-template-columns: repeat(8, 1fr); /* 调整为8列更紧凑 */
+                grid-template-columns: repeat(8, 1fr);
                 gap: 14px;
             }
             
-            .nav-icon {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 1 / 1;
-            }
-
             .nav-text {
                 font-size: 14px;
             }
@@ -186,15 +183,15 @@
         /* 小平板 / 大屏手机适配 (最大 992px) */
         @media (max-width: 992px) {
             .nav-grid {
-                grid-template-columns: repeat(6, 1fr); /* 缩减为6列 */
+                grid-template-columns: repeat(6, 1fr);
                 gap: 12px;
             }
         }
 
-        /* 手机端适配 (最大 768px) - 追求高度紧凑与舒适手持 */
+        /* 手机端适配 (最大 768px) */
         @media (max-width: 768px) {
             .container {
-                margin: 12px 10px; /* 减小边距，增加视口利用率 */
+                margin: 12px 10px;
             }
 
             .top-nav {
@@ -218,32 +215,29 @@
             }
 
             .nav-grid {
-                grid-template-columns: repeat(6, 1fr); /* 手机端使用4列，间距更合理 */
+                grid-template-columns: repeat(6, 1fr);
                 gap: 10px;
             }
             
             .nav-icon {
-                width: 100%; /* 限制宽度防止占满格子过大 */
-                max-width: 120px;
-                height: auto;
-                aspect-ratio: 1 / 1;
+                max-width: 100%;
                 margin-bottom: 4px;
             }
 
             .nav-text {
-                font-size: 10px;
+                font-size: 14px;
                 line-height: 1.2;
                 white-space: nowrap;
                 overflow: hidden;
-                text-overflow: ellipsis; /* 文字过长自动省略号 */
-                max-width: 100%;
+                text-overflow: ellipsis;
             }
         }
 
-        /* 超小屏手机适配 (最大 380px) */
-        @media (max-width: 380px) {
+        /* 窄屏手机适配 (最大 420px) - 针对 381px 宽度优化 */
+        @media (max-width: 420px) {
             .nav-grid {
-                grid-template-columns: repeat(4, 1fr); /* 极窄屏幕转为3列 */
+                grid-template-columns: repeat(4, 1fr); /* 在381px下切换为4列，图标尺寸高度一致 */
+                gap: 8px;
             }
         }
 
@@ -412,6 +406,54 @@
                     </div>
                     <div class="nav-text">QRBTF</div>
                 </a>
+                <a href="https://www.magnific.com/app" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/magnific.png" alt="Magnific">
+                    </div>
+                    <div class="nav-text">Magnific</div>
+                </a>
+                <a href="https://www.freevector.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/freevector.png" alt="Freevector">
+                    </div>
+                    <div class="nav-text">Freevector</div>
+                </a>
+                <a href="https://www.zcool.com.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/zhanku.png" alt="站酷">
+                    </div>
+                    <div class="nav-text">站酷</div>
+                </a>
+                <a href="https://www.uisdc.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/youshe.png" alt="优设">
+                    </div>
+                    <div class="nav-text">优设</div>
+                </a>
+                <a href="https://dribbble.com/shots" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/dribbble.png" alt="Dribbble">
+                    </div>
+                    <div class="nav-text">Dribbble</div>
+                </a>
+                <a href="https://www.pinterest.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/pinterest.png" alt="Pinterest">
+                    </div>
+                    <div class="nav-text">Pinterest</div>
+                </a>
+                <a href="https://www.behance.net/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/behance.png" alt="Behance">
+                    </div>
+                    <div class="nav-text">Behance</div>
+                </a>
+                <a href="https://www.iconfont.cn/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/iconfont.png" alt="iconfont">
+                    </div>
+                    <div class="nav-text">iconfont</div>
+                </a>
                 <a href="https://moonvy.com/" class="nav-item" target="_blank">
                     <div class="nav-icon">
                         <img src="./ico/moonvy.png" alt="Moonvy 月维">
@@ -435,6 +477,12 @@
                         <img src="./ico/imghost.png" alt="图床">
                     </div>
                     <div class="nav-text">图床</div>
+                </a>
+                <a href="https://www.tsieina.com/" class="nav-item" target="_blank">
+                    <div class="nav-icon">
+                        <img src="./ico/namoxiansen.png" alt="那墨先森">
+                    </div>
+                    <div class="nav-text">那墨先森</div>
                 </a>
             </nav>
         </div>
@@ -677,7 +725,7 @@
                 </a>
                 <a href="https://www.gfxcamp.com" class="nav-item" target="_blank">
                     <div class="nav-icon">
-                        <img src="ico/quchiyihao.png" alt="龋齿一号">
+                        <img src="ico/quchiyihao.png" alt="齿一号">
                     </div>
                     <div class="nav-text">龋齿一号</div>
                 </a>
