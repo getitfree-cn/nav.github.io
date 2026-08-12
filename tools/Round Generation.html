@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片透明圆角剪裁工具</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 650px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #1e293b;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    label {
+      font-weight: 600;
+      min-width: 80px;
+      font-size: 0.95rem;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .file-btn {
+      background: #2563eb;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .file-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .file-name {
+      font-size: 0.85rem;
+      color: #64748b;
+      word-break: break-all;
+    }
+
+    input[type="number"], input[type="range"] {
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    input[type="number"] {
+      width: 90px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+    }
+
+    .preview-box {
+      margin-top: 10px;
+      border: 2px dashed #cbd5e1;
+      border-radius: 8px;
+      min-height: 240px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      /* 棋盘格背景表示透明 */
+      background-color: #eee;
+      background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), 
+                        linear-gradient(-45deg, #ccc 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #ccc 75%), 
+                        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    }
+
+    canvas {
+      max-width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+    }
+
+    .placeholder-text {
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .btn-convert {
+      background: #059669;
+      color: white;
+    }
+
+    .btn-download {
+      background: #0284c7;
+      color: white;
+    }
+
+    .btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>图片透明圆角生成器</h1>
+
+  <div class="controls">
+    <!-- 上传按钮 -->
+    <div class="form-group">
+      <label>选择图片：</label>
+      <label for="uploadInput" class="file-btn">浏览图片</label>
+      <input type="file" id="uploadInput" accept="image/*">
+      <span id="fileName" class="file-name">未选择文件</span>
+    </div>
+
+    <!-- 圆角尺寸输入 -->
+    <div class="form-group">
+      <label>圆角半径：</label>
+      <input type="range" id="radiusRange" min="0" max="200" value="30">
+      <input type="number" id="radiusInput" min="0" value="30">
+      <span>px</span>
+    </div>
+  </div>
+
+  <!-- 预览区 -->
+  <div class="preview-box">
+    <span id="placeholder" class="placeholder-text">请上传一张图片以开始预览</span>
+    <canvas id="canvas" style="display: none;"></canvas>
+  </div>
+
+  <!-- 操作按钮 -->
+  <div class="actions">
+    <button id="convertBtn" class="btn btn-convert" disabled>刷新应用</button>
+    <button id="downloadBtn" class="btn btn-download" disabled>下载透明 PNG</button>
+  </div>
+</div>
+
+<script>
+  const uploadInput = document.getElementById('uploadInput');
+  const fileName = document.getElementById('fileName');
+  const radiusInput = document.getElementById('radiusInput');
+  const radiusRange = document.getElementById('radiusRange');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const placeholder = document.getElementById('placeholder');
+  const convertBtn = document.getElementById('convertBtn');
+  const downloadBtn = document.getElementById('downloadBtn');
+
+  let currentImage = null;
+
+  // 文件上传处理
+  uploadInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    fileName.textContent = file.name;
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        currentImage = img;
+        // 动态设置滑动条的最大值为图片短边的一半
+        const maxRadius = Math.floor(Math.min(img.width, img.height) / 2);
+        radiusRange.max = maxRadius;
+        if (parseInt(radiusInput.value) > maxRadius) {
+          radiusInput.value = maxRadius;
+          radiusRange.value = maxRadius;
+        }
+
+        convertBtn.disabled = false;
+        downloadBtn.disabled = false;
+        placeholder.style.display = 'none';
+        canvas.style.display = 'block';
+
+        renderCanvas();
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // 圆角数值同步
+  radiusInput.addEventListener('input', () => {
+    radiusRange.value = radiusInput.value;
+    renderCanvas();
+  });
+
+  radiusRange.addEventListener('input', () => {
+    radiusInput.value = radiusRange.value;
+    renderCanvas();
+  });
+
+  convertBtn.addEventListener('click', renderCanvas);
+
+  // 核心绘制逻辑（在 Canvas 上裁剪出透明圆角）
+  function renderCanvas() {
+    if (!currentImage) return;
+
+    const w = currentImage.width;
+    const h = currentImage.height;
+    let r = parseInt(radiusInput.value) || 0;
+
+    // 约束半径最大不超过短边一半
+    r = Math.min(r, w / 2, h / 2);
+
+    canvas.width = w;
+    canvas.height = h;
+
+    // 清空画布（确保背景透明）
+    ctx.clearRect(0, 0, w, h);
+
+    // 创建圆角路径并裁剪
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(0, 0, w, h, r);
+    } else {
+      // 兼容老版本浏览器的绘制逻辑
+      ctx.moveTo(r, 0);
+      ctx.arcTo(w, 0, w, h, r);
+      ctx.arcTo(w, h, 0, h, r);
+      ctx.arcTo(0, h, 0, 0, r);
+      ctx.arcTo(0, 0, w, 0, r);
+      ctx.closePath();
+    }
+    ctx.clip();
+
+    // 绘制原图
+    ctx.drawImage(currentImage, 0, 0, w, h);
+  }
+
+  // 下载图片
+  downloadBtn.addEventListener('click', () => {
+    if (!currentImage) return;
+    const link = document.createElement('a');
+    link.download = `rounded_${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+</script>
+
+</body>
+</html>
