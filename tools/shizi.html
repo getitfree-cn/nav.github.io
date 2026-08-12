@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- 在 <head> 中添加这行网络字体引用 -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap">
   <title>儿童识字米字格卡片</title>
   <style>
     :root {
@@ -18,6 +16,15 @@
       --grid-border: #d32f2f;
       --grid-line: #ef9a9a;
     }
+
+    /* 自定义本地字体定义 */
+    @font-face {
+      font-family: 'DedaoJinKai W03';
+      src: url('./dedaojinkaiw03.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      }
+
 
     * {
       box-sizing: border-box;
@@ -253,7 +260,7 @@
     /* 🔤 提升汉字占比：字体大小提高到 86% 比例 */
     .char-text {
       position: absolute;
-      top: 0;
+      top: 3px;
       left: 0;
       width: 100%;
       height: 100%;
@@ -261,8 +268,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 86cqw; /* 增大汉字在米字格中的显示占比 */
-      font-family: "LXGW WenKai TC", "LXGW WenKai", "KaiTi", "STKaiti", "楷体", serif;
+      font-size: 77cqw; /* 增大汉字在米字格中的显示占比 */
+      font-family: "DedaoJinKai W03", "KaiTi", "STKaiti", "楷体", "DFKai-SB", serif;
       color: #1a1a1a;
       line-height: 1;
       pointer-events: none;
