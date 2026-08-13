@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>儿童识字米字格卡片</title>
+  <!-- 引入文鼎标准楷体（笔画极其规范，专为教育与书写设计） -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@oecphy/ar-pl-ukai@1.0.0/index.css">
   <style>
     :root {
       --primary-color: #4a90e2;
@@ -16,14 +18,6 @@
       --grid-border: #d32f2f;
       --grid-line: #ef9a9a;
     }
-
-    /* 自定义本地字体定义 */
-    @font-face {
-      font-family: 'DedaoJinKai W03';
-      src: url('./dedaojinkaiw03.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      }
 
 
     * {
@@ -260,7 +254,7 @@
     /* 🔤 提升汉字占比：字体大小提高到 86% 比例 */
     .char-text {
       position: absolute;
-      top: 3px;
+      top: 2px;
       left: 0;
       width: 100%;
       height: 100%;
@@ -269,7 +263,7 @@
       justify-content: center;
       align-items: center;
       font-size: 77cqw; /* 增大汉字在米字格中的显示占比 */
-      font-family: "DedaoJinKai W03", "KaiTi", "STKaiti", "楷体", "DFKai-SB", serif;
+      font-family: "AR PL UKai", "AR PL UKai CN", "KaiTi", "STKaiti", "楷体", serif;
       color: #1a1a1a;
       line-height: 1;
       pointer-events: none;
